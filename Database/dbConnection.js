@@ -1,22 +1,25 @@
-const Sequelize = require('sequelize');
-require('dotenv').config();
+const { Sequelize } = require('sequelize');
+const dotenv = require('dotenv');
+dotenv.config({ path: "./config.env" });
 
 const sequelize = new Sequelize(process.env.DB_DATABASE, process.env.DB_USERNAME, process.env.DB_PASSWORD, {
     host: process.env.DB_HOST,
+    port: parseInt(process.env.PORT),
     dialect: 'mssql',
     dialectOptions: {
         options: {
-            enableArithAbort: false,
-            cryptoCredentialDetails: {
-                minVersion: 'TLSv1'
-            }
+            encrypt: false
         }
-    }.then(() => {
-        console.log('Database Connection Successful!')
-    }).catch((err) => {
-        console.log(err.message);
-        console.log('Database Connection Failed!')
-    })
+    }
 });
 
-module.exports = sequelize;
+// new sqlInstance.ConnectionPool(dotenv)
+
+sequelize.authenticate().then(() => {
+    console.log('Connection has been established successfully.');
+ }).catch((error) => {
+    console.error('Unable to connect to the database: ', error);
+ });
+
+
+module.exports = db;
