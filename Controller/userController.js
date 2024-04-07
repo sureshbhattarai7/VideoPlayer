@@ -17,3 +17,20 @@ exports.getUsers = async (req, res, next) => {
         })
     };
 };
+
+exports.getUser = async (req, res, next) => {
+    const user = await User.findByPk(req.params.id);
+    try {
+        res.status(200).json({
+            status: 'success',
+            data: {
+                user
+            }
+        })
+    } catch (err) {
+        res.status(400).json({
+            status: 'fail',
+            message: err.message
+        })
+    }
+}
