@@ -5,7 +5,7 @@ exports.getUsers = async (req, res, next) => {
     try {
         res.status(200).json({
             status: 'success',
-            totalUsers: users.length(),
+            totalUsers: users.length,
             data: {
                 users
             }
