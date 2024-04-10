@@ -59,3 +59,25 @@ exports.signup = async (req, res, next) => {
         })
     };
 };
+
+exports.login = async (req, res, next) => {
+    const { email, password } = req.body;
+
+    //Check if email and password exists
+    if (!email || !password) {
+        res.status(400).json({
+            status: 'fail',
+            message: `Wrong Credentials! Please enter valid email and password!`
+        })
+    }
+
+    //Check if email exists and password is correct
+    const user = await User.findOne({ email }).select('+password');
+
+    if (!user || !(await user.correctPassword(password, user.password))) {
+        res.status(400).json({
+            status: 'fail',
+            message: 'Incorrect email or password!'
+        })
+    };
+};
